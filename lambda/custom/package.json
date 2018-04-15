@@ -1,0 +1,13 @@
+{
+  "name": "mySmartHouse",
+  "version": "1.0.0",
+  "description": "Alexa My Smart House",
+  "main": "index.js",
+  "dependencies": {
+    "alexa-sdk": "^1.0.25",
+    "util": "^0.10.3"
+  },
+  "devDependencies": {},
+  "author": "Amazon.com",
+  "license": "SEE LICENSE IN license.md"
+}

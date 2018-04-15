@@ -1,0 +1,19 @@
+{
+  "deploy_settings": {
+    "default": {
+      "skill_id": "amzn1.ask.skill.d6719b29-b464-402c-b5b1-120cbf204c9f",
+      "was_cloned": false,
+      "merge": {
+        "manifest": {
+          "apis": {
+            "custom": {
+              "endpoint": {
+                "uri": "arn:aws:lambda:eu-west-1:061737249886:function:mySmartHouse"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
