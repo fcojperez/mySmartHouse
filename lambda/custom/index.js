@@ -1,8 +1,13 @@
 'use strict';
 
+
 const Alexa = require('alexa-sdk');
 const APP_ID = 'amzn1.ask.skill.d6719b29-b464-402c-b5b1-120cbf204c9f';
 const util = require('util');
+
+const http = require('http'); 
+const HOST = 'battlefield1408.tk';
+const PORT = '5000';
 
 const HELP_MESSAGE = 'You can say Alexa switch on all lights for 2 minutes or Alexa turn on all lights for 2 minutes';
 const HELP_REPROMPT = 'What can I help you with?';
@@ -36,6 +41,38 @@ const handlers = {
         this.response.speak(STOP_MESSAGE);
         this.emit(':responseReady');
     },
+    'manageLights': function(){
+        console.log('In manageLights');
+        let filledSlots = delegateSlotCollection.call(this);
+        console.log('filledSlots: ' + JSON.stringify(filledSlots));
+
+        if (!filledSlots) {
+            return;
+        }        
+        //response
+        const light = (filledSlots.SelectingLight.value).split(' ').join('_');
+        const action = filledSlots.SelectingAction.value;
+        
+        console.log('resolutions: ' + JSON.stringify(filledSlots.SelectingLight.resolutions));
+        
+        const query = `${light}/${action}`;
+        console.log('query: ' + query);
+
+        httpGet(query,  (theResult) => {
+            console.log("sent     : " + query);
+            console.log("received : " + theResult);
+                            
+            const speechOutPut = theResult;
+            const cardTitle = 'Switching on Settings';
+            const imageObj = {
+                smallImageUrl: 'https://icons8.com/icon/20183/light-on',
+                largeImageUrl: 'https://icons8.com/icon/20183/light-on'
+            };
+            const cardContent = speechOutPut;
+            this.response.speak(speechOutPut).cardRenderer(cardTitle, cardContent, imageObj);
+            this.emit(':responseReady');
+        });
+    },
     'switchOnTheLight': function(){
         console.log('In switchOnTheLight');
         let filledSlots = delegateSlotCollection.call(this);
@@ -47,18 +84,25 @@ const handlers = {
         }
 
         //response
-        const light = filledSlots.SelectingLight.value;
-        const duration = filledSlots.SelectingDuration.value;
-        const speechOutPut = util.format("switching on %s for %s", light, duration);
-        const cardTitle = 'Switching on Settings';
-        const imageObj = {
-            smallImageUrl: 'https://icons8.com/icon/20183/light-on',
-            largeImageUrl: 'https://icons8.com/icon/20183/light-on'
-        };
-        
-        const cardContent = speechOutPut;
-        this.response.speak(speechOutPut).cardRenderer(cardTitle, cardContent, imageObj);
-        this.emit(':responseReady');
+        const light = filledSlots.SelectingLight.resolutions.resolutionsPerAuthority.values.value.name;
+        const duration = filledSlots.SelectingDuration.resolutions.resolutionsPerAuthority.values.value.name;
+        const query = `${light}/on`;
+
+        httpGet(query,  (theResult) => {
+            console.log("sent     : " + query);
+            console.log("received : " + theResult);
+                            
+            const speechOutPut = theResult;
+            const cardTitle = 'Switching on Settings';
+            const imageObj = {
+                smallImageUrl: 'https://icons8.com/icon/20183/light-on',
+                largeImageUrl: 'https://icons8.com/icon/20183/light-on'
+            };
+            const cardContent = speechOutPut;
+            this.response.speak(speechOutPut).cardRenderer(cardTitle, cardContent, imageObj);
+            this.emit(':responseReady');
+        });
+
     }
 };
 
@@ -115,7 +159,7 @@ function delegateSlotCollection() {
 
 function onLauchRequest(){
     console.log('In onLauchRequest');
-    const speechOutPut = 'Welcome to My Smart Home. ' + HELP_MESSAGE;
+    const speechOutPut = 'What do you want to do?';
     const repromptSpeech = speechOutPut;
     const cardTitle = 'My Smart Home';
     const cardContent = speechOutPut;
@@ -130,3 +174,31 @@ function onLauchRequest(){
     this.emit(':responseReady');
 }
 
+
+
+function httpGet(query, callback) {
+    var options = {
+        host: HOST,
+        port: PORT,
+        path: '/' + encodeURIComponent(query),
+        method: 'GET',
+    };
+
+    var req = http.request(options, res => {
+        res.setEncoding('utf8');
+        var responseString = "";
+        
+        //accept incoming data asynchronously
+        res.on('data', chunk => {
+            responseString = responseString + chunk;
+        });
+        
+        //return the data when streaming is complete
+        res.on('end', () => {
+            console.log(responseString);
+            callback(responseString);
+        });
+
+    });
+    req.end();
+}

@@ -1,127 +1,222 @@
 {
   "interactionModel": {
-    "languageModel": {
-      "invocationName": "my smart house",
-      "intents": [
-        {
-          "name": "AMAZON.CancelIntent",
-          "samples": []
-        },
-        {
-          "name": "AMAZON.HelpIntent",
-          "samples": []
-        },
-        {
-          "name": "AMAZON.StopIntent",
-          "samples": []
-        },
-        {
-          "name": "switchOnTheLight",
-          "slots": [
-            {
-              "name": "SelectingLight",
-              "type": "TypeLight",
-              "samples": [
-                "switch on {SelectingLight}"
-              ]
-            },
-            {
-              "name": "SelectingDuration",
-              "type": "AMAZON.DURATION",
-              "samples": [
-                "I want a duration for {SelectingDuration}",
-                "set up {SelectingDuration}"
-              ]
-            }
+      "languageModel": {
+          "invocationName": "my smart home",
+          "intents": [
+              {
+                  "name": "AMAZON.CancelIntent",
+                  "samples": []
+              },
+              {
+                  "name": "AMAZON.HelpIntent",
+                  "samples": []
+              },
+              {
+                  "name": "AMAZON.StopIntent",
+                  "samples": []
+              },
+              {
+                  "name": "switchOnTheLight",
+                  "slots": [
+                      {
+                          "name": "SelectingLight",
+                          "type": "TypeLight",
+                          "samples": [
+                              "switch on {SelectingLight}"
+                          ]
+                      },
+                      {
+                          "name": "SelectingDuration",
+                          "type": "AMAZON.DURATION",
+                          "samples": [
+                              "I want a duration for {SelectingDuration}",
+                              "set up {SelectingDuration}"
+                          ]
+                      }
+                  ],
+                  "samples": [
+                      "switch on {SelectingLight}",
+                      "switch on {SelectingLight} for {SelectingDuration}",
+                      "switch on the light",
+                      "turn on the light",
+                      "turn on {SelectingLight} for {SelectingDuration}"
+                  ]
+              },
+              {
+                  "name": "manageLights",
+                  "slots": [
+                      {
+                          "name": "SelectingLight",
+                          "type": "TypeLight",
+                          "samples": [
+                              "{SelectingLight}"
+                          ]
+                      },
+                      {
+                          "name": "SelectingAction",
+                          "type": "TypeAction",
+                          "samples": [
+                              "switch {SelectingAction}",
+                              "{SelectingAction}",
+                              "get {SelectingAction}"
+                          ]
+                      }
+                  ],
+                  "samples": [
+                      "switch it off {SelectingLight}",
+                      "switch it on {SelectingLight}",
+                      "get status {SelectingLight}",
+                      "switch off {SelectingLight}",
+                      "switch on {SelectingLight}",
+                      "lights",
+                      "I want to manage lights"
+                  ]
+              }
           ],
-          "samples": [
-            "switch on {SelectingLight}",
-            "switch on {SelectingLight} for {SelectingDuration}",
-            "switch on the light",
-            "turn on the light",
-            "turn on {SelectingLight} for {SelectingDuration}"
+          "types": [
+              {
+                  "name": "TypeLight",
+                  "values": [
+                      {
+                          "name": {
+                              "value": "living_room",
+                              "synonyms": [
+                                  "the living room",
+                                  "living room"
+                              ]
+                          }
+                      },
+                      {
+                          "name": {
+                              "value": "kitchen",
+                              "synonyms": [
+                                  "the kitchen"
+                              ]
+                          }
+                      },
+                      {
+                          "name": {
+                              "value": "all_lights",
+                              "synonyms": [
+                                  "all lights"
+                              ]
+                          }
+                      }
+                  ]
+              },
+              {
+                  "name": "TypeAction",
+                  "values": [
+                      {
+                          "name": {
+                              "value": "status"
+                          }
+                      },
+                      {
+                          "name": {
+                              "value": "off"
+                          }
+                      },
+                      {
+                          "name": {
+                              "value": "on"
+                          }
+                      }
+                  ]
+              }
           ]
-        }
-      ],
-      "types": [
-        {
-          "values": [
-            {
-              "name": {
-                "value": "living room",
-                "synonyms": [
-                  "the living room"
-                ]
-              }
-            },
-            {
-              "name": {
-                "value": "kitchen",
-                "synonyms": [
-                  "the kitchen"
-                ]
-              }
-            },
-            {
-              "name": {
-                "value": "all",
-                "synonyms": [
-                  "all lights"
-                ]
-              }
-            }
-          ],
-          "name": "TypeLight"
-        }
-      ]
-    },
-    "dialog": {
-      "intents": [
-        {
-          "name": "switchOnTheLight",
-          "confirmationRequired": false,
-          "slots": [
-            {
-              "name": "SelectingLight",
-              "type": "TypeLight",
-              "elicitationRequired": true,
-              "confirmationRequired": false,
-              "prompts": {
-                "elicitation": "Elicit.Slot.525970947923.931621677759"
-              }
-            },
-            {
-              "name": "SelectingDuration",
-              "type": "AMAZON.DURATION",
-              "elicitationRequired": true,
-              "confirmationRequired": false,
-              "prompts": {
-                "elicitation": "Elicit.Slot.525970947923.556882899913"
-              }
-            }
-          ]
-        }
-      ]
-    },
-    "prompts": [
-      {
-        "id": "Elicit.Slot.525970947923.931621677759",
-        "variations": [
-          {
-            "type": "PlainText",
-            "value": "whould you like all lights, kitchen light or living room light"
-          }
-        ]
       },
-      {
-        "id": "Elicit.Slot.525970947923.556882899913",
-        "variations": [
+      "dialog": {
+          "intents": [
+              {
+                  "name": "switchOnTheLight",
+                  "confirmationRequired": false,
+                  "prompts": {},
+                  "slots": [
+                      {
+                          "name": "SelectingLight",
+                          "type": "TypeLight",
+                          "confirmationRequired": false,
+                          "elicitationRequired": true,
+                          "prompts": {
+                              "elicitation": "Elicit.Slot.525970947923.931621677759"
+                          }
+                      },
+                      {
+                          "name": "SelectingDuration",
+                          "type": "AMAZON.DURATION",
+                          "confirmationRequired": false,
+                          "elicitationRequired": true,
+                          "prompts": {
+                              "elicitation": "Elicit.Slot.525970947923.556882899913"
+                          }
+                      }
+                  ]
+              },
+              {
+                  "name": "manageLights",
+                  "confirmationRequired": false,
+                  "prompts": {},
+                  "slots": [
+                      {
+                          "name": "SelectingLight",
+                          "type": "TypeLight",
+                          "confirmationRequired": false,
+                          "elicitationRequired": true,
+                          "prompts": {
+                              "elicitation": "Elicit.Slot.482516156906.238099373270"
+                          }
+                      },
+                      {
+                          "name": "SelectingAction",
+                          "type": "TypeAction",
+                          "confirmationRequired": false,
+                          "elicitationRequired": true,
+                          "prompts": {
+                              "elicitation": "Elicit.Slot.482516156906.201913564419"
+                          }
+                      }
+                  ]
+              }
+          ]
+      },
+      "prompts": [
           {
-            "type": "PlainText",
-            "value": "what duration do you want"
+              "id": "Elicit.Slot.525970947923.931621677759",
+              "variations": [
+                  {
+                      "type": "PlainText",
+                      "value": "whould you like all lights, kitchen light or living room light"
+                  }
+              ]
+          },
+          {
+              "id": "Elicit.Slot.525970947923.556882899913",
+              "variations": [
+                  {
+                      "type": "PlainText",
+                      "value": "what duration do you want"
+                  }
+              ]
+          },
+          {
+              "id": "Elicit.Slot.482516156906.238099373270",
+              "variations": [
+                  {
+                      "type": "PlainText",
+                      "value": "what light do you want to manage?"
+                  }
+              ]
+          },
+          {
+              "id": "Elicit.Slot.482516156906.201913564419",
+              "variations": [
+                  {
+                      "type": "PlainText",
+                      "value": "what do you want to do with {SelectingLight} ?"
+                  }
+              ]
           }
-        ]
-      }
-    ]
+      ]
   }
 }
