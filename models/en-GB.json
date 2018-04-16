@@ -63,6 +63,8 @@
                       }
                   ],
                   "samples": [
+                      "get {SelectingAction} {SelectingLight}",
+                      "switch {SelectingAction} {SelectingLight}",
                       "switch it off {SelectingLight}",
                       "switch it on {SelectingLight}",
                       "get status {SelectingLight}",
